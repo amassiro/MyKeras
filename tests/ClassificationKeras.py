@@ -40,25 +40,40 @@ dataloader.PrepareTrainingAndTestTree(TCut(''),
 
 # Define initialization
 #def normal(shape, name=None):
-def normal(name=None):
-    #return initializers.normal(shape, scale=0.05, name=name)
-    #return initializations.normal(shape, scale=0.05, name=name)
-    return initializers.TruncatedNormal(mean=0.0, stddev=0.05, seed=None)
+#def normal(name=None):
+    ##return initializers.normal(shape, scale=0.05, name=name)
+    ##return initializations.normal(shape, scale=0.05, name=name)
+    #return initializers.TruncatedNormal(mean=0.0, stddev=0.05, seed=None)
     
     
 
 # Define model
 model = Sequential()
-model.add(Dense(64, init=normal, activation='relu', W_regularizer=l2(1e-5), input_dim=4))
+#model.add(Dense(64, init=normal, activation='relu', W_regularizer=l2(1e-5), input_dim=4))
 #model.add(Dense(32, init=normal, activation='relu', W_regularizer=l2(1e-5)))
-model.add(Dense(2, init=normal, activation='softmax'))
+#model.add(Dense(2, init=normal, activation='softmax'))
+
+#model.add(Dense(2, activation='softmax'))
+
+
+model.add(Dense(2, activation='softmax', input_dim=4)) #----> needed to define the input dimension of first layer!!!!
+model.add(Dense(50, activation="tanh"))
+model.add(Dense(2, activation="tanh"))
+model.add(Dense(2, activation='softmax'))
+
+
 
 # Set loss and optimizer
 model.compile(loss='categorical_crossentropy', optimizer=SGD(lr=0.01), metrics=['accuracy',])
+#model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+
 
 # Store model to file
 model.save('model.h5')
 model.summary()
+
+
 
 # Book methods
 factory.BookMethod(dataloader, TMVA.Types.kFisher, 'Fisher',

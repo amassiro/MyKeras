@@ -68,6 +68,9 @@ model.add(Dense(100, activation="tanh"))
 model.add(Dense(50, activation="tanh"))
 model.add(Dense(1, activation="sigmoid"))
 
+model.save('modelmy.h5')
+
+
 model.summary()
 
 
@@ -127,6 +130,10 @@ ax.set_zlabel("f", labelpad=12);
 #plt.show()
 
 
+
+########################################################
+# store NN
+model.save('model.h5')
 
 
 

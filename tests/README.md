@@ -14,5 +14,17 @@ Visualization:
     ann_viz(model)    
     
     
-    
+Test:
 
+    python myTest.py
+    
+    
+    
+Now using ROOT:
+
+    python ClassificationKeras.py
+
+    r99t LaunchClasGUI.C
+    
+    
+    
