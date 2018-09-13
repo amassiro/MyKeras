@@ -40,19 +40,20 @@ labels_val = np.vstack([np.ones((num_events, 1)), np.zeros((num_events, 1))])
 ########################################################
 # plot samples
 
-#range_ = ((-3, 3), (-3, 3))
-#plt.figure(0, figsize=(8,4))
-#plt.subplot(1,2,1)
-#plt.title("Signal")
-#plt.xlabel("x")
-#plt.ylabel("y")
-#plt.hist2d(signal_train[:,0], signal_train[:,1], range=range_, bins=20, cmap=cm.coolwarm)
-#plt.subplot(1,2,2); plt.title("Background")
-#plt.hist2d(background_train[:,0], background_train[:,1], range=range_, bins=20, cmap=cm.coolwarm)
-#plt.xlabel("x"), plt.ylabel("y")
+range_ = ((-3, 3), (-3, 3))
+fig = plt.figure(0, figsize=(12,12))
+plt.subplot(2,2,1)
+plt.title("Signal")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.hist2d(signal_train[:,0], signal_train[:,1], range=range_, bins=20, cmap=cm.coolwarm)
+plt.subplot(2,2,2)
+plt.title("Background")
+plt.hist2d(background_train[:,0], background_train[:,1], range=range_, bins=20, cmap=cm.coolwarm)
+plt.xlabel("x"), plt.ylabel("y")
 
-# -> to actually plot it!
-# plt.show()
+#-> to actually plot it!
+#plt.show()
 
 
 
@@ -61,6 +62,10 @@ labels_val = np.vstack([np.ones((num_events, 1)), np.zeros((num_events, 1))])
 # define NN achitecture
 model = Sequential()
 model.add(Dense(100, activation="relu", input_dim=2))
+model.add(Dense(100, activation="relu", input_dim=100))
+model.add(Dense(50, activation="tanh"))
+model.add(Dense(100, activation="tanh"))
+model.add(Dense(50, activation="tanh"))
 model.add(Dense(1, activation="sigmoid"))
 
 model.summary()
@@ -76,16 +81,19 @@ model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
 history = model.fit(data_train, labels_train,
           validation_data=(data_val, labels_val),
           batch_size=len(data_train),
-          epochs=100)
+          epochs=200)
+          #epochs=100)
 
 
 ########################################################
 # validation plot
 
-#epochs = range(1, len(history.history["loss"])+1)
-#plt.plot(epochs, history.history["loss"], lw=3, label="Training loss")
-#plt.plot(epochs, history.history["val_loss"], lw=3, label="Validation loss")
-#plt.xlabel("Gradient step"), plt.ylabel("Cross-entropy loss");
+ax = fig.add_subplot(2,2,3)
+
+epochs = range(1, len(history.history["loss"])+1)
+plt.plot(epochs, history.history["loss"], lw=3, label="Training loss")
+plt.plot(epochs, history.history["val_loss"], lw=3, label="Validation loss")
+plt.xlabel("Gradient step"), plt.ylabel("Cross-entropy loss");
 
 #plt.show()
 
@@ -108,18 +116,40 @@ x = np.reshape(grid[:, 0], (num_points, num_points)).T
 y = np.reshape(grid[:, 1], (num_points, num_points)).T
 z = np.reshape(f_, (num_points, num_points)).T
 
-fig = plt.figure(figsize=(7, 7))
-ax = fig.gca(projection="3d")
+ax = fig.add_subplot(2,2,4, projection="3d")
 ax.view_init(30, -70)
 ax.plot_surface(x, y, z, cmap=cm.coolwarm)
 ax.set_xlabel("x", labelpad=12)
 ax.set_ylabel("y", labelpad=12)
 ax.set_zlabel("f", labelpad=12);
 
+#plt.show()
+
+
+
+
+
+########################################################
+# plot structure of NN
+
+from keras.utils import plot_model, print_summary
+print_summary(model)
+
+#figStructureNN = plt.figure(1, figsize=(5,5))
+
+#plot_model(model)
+#plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
+plot_model(model, show_shapes=True, show_layer_names=True)
+
+#tensorboard = TensorboardCallback()
+#tensorboard.set_model(model) # your model here, will write graph etc
+#tensorboard.on_train_end() # will close the writer
+
+
+########################################################
+# plots only at the end
+
 plt.show()
-
-
-
 
 
 
