@@ -81,7 +81,8 @@ model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
 history = model.fit(data_train, labels_train,
           validation_data=(data_val, labels_val),
           batch_size=len(data_train),
-          epochs=200)
+          epochs=10)
+          #epochs=200)
           #epochs=100)
 
 
@@ -138,12 +139,33 @@ print_summary(model)
 #figStructureNN = plt.figure(1, figsize=(5,5))
 
 #plot_model(model)
-#plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
-plot_model(model, show_shapes=True, show_layer_names=True)
+plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
+#plot_model(model, show_shapes=True, show_layer_names=True)
 
 #tensorboard = TensorboardCallback()
 #tensorboard.set_model(model) # your model here, will write graph etc
 #tensorboard.on_train_end() # will close the writer
+
+
+########################################################
+## only for 3D as input
+
+#print " input_shape = ", model.input_shape
+
+#from keras_util import convert_drawer_model
+#from matplotlib_util import save_model_to_file
+
+## get Keras sequential model
+#model_to_plot = convert_drawer_model(model)
+#save_model_to_file(model_to_plot, "example.pdf")
+
+
+########################################################
+## visualization
+
+from ann_visualizer.visualize import ann_viz;
+#Build your model here
+ann_viz(model)
 
 
 ########################################################
