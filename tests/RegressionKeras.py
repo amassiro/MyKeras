@@ -7,7 +7,8 @@ from os.path import isfile
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation
 from keras.regularizers import l2
-from keras import initializations
+#from keras import initializations
+from keras import initializers
 from keras.optimizers import SGD
 
 # Setup TMVA
@@ -40,13 +41,21 @@ dataloader.PrepareTrainingAndTestTree(TCut(''),
 
 # Define initialization
 def normal(shape, name=None):
-    return initializations.normal(shape, scale=0.05, name=name)
+    #return initializations.normal(shape, scale=0.05, name=name)
+    return initializers.RandomNormal(mean=0.0, stddev=0.05, seed=None)
+
+
 
 # Define model
 model = Sequential()
-model.add(Dense(64, init=normal, activation='tanh', W_regularizer=l2(1e-5), input_dim=2))
+model.add(Dense(64, activation='tanh', W_regularizer=l2(1e-5), input_dim=2))
+#model.add(Dense(64, init=normal, activation='tanh', W_regularizer=l2(1e-5), input_dim=2))
 #model.add(Dense(32, init=normal, activation='tanh', W_regularizer=l2(1e-5)))
-model.add(Dense(1, init=normal, activation='linear'))
+#model.add(Dense(1, init=normal, activation='linear'))
+model.add(Dense(64, activation='tanh', W_regularizer=l2(1e-5)))
+#model.add(Dense(64, activation='tanh', W_regularizer=l2(1e-5)))
+#model.add(Dense(64, activation='tanh', W_regularizer=l2(1e-5)))
+model.add(Dense(1, activation='linear'))
 
 # Set loss and optimizer
 model.compile(loss='mean_squared_error', optimizer=SGD(lr=0.01))
