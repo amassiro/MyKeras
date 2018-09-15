@@ -53,8 +53,11 @@ model.add(Dense(64, activation='tanh', W_regularizer=l2(1e-5), input_dim=2))
 #model.add(Dense(32, init=normal, activation='tanh', W_regularizer=l2(1e-5)))
 #model.add(Dense(1, init=normal, activation='linear'))
 model.add(Dense(64, activation='tanh', W_regularizer=l2(1e-5)))
+
+#model.add(Dense(100, activation='tanh', W_regularizer=l2(1e-5)))
+
 #model.add(Dense(64, activation='tanh', W_regularizer=l2(1e-5)))
-#model.add(Dense(64, activation='tanh', W_regularizer=l2(1e-5)))
+#model.add(Dense(200, activation='tanh'))
 model.add(Dense(1, activation='linear'))
 
 # Set loss and optimizer
@@ -66,7 +69,8 @@ model.summary()
 
 # Book methods
 factory.BookMethod(dataloader, TMVA.Types.kPyKeras, 'PyKeras',
-        'H:!V:VarTransform=D,G:FilenameModel=model.h5:NumEpochs=20:BatchSize=32')
+        #'H:!V:VarTransform=D,G:FilenameModel=model.h5:NumEpochs=1000:BatchSize=100')
+        'H:!V:VarTransform=D,G:FilenameModel=model.h5:NumEpochs=1000:BatchSize=32')
 factory.BookMethod(dataloader, TMVA.Types.kBDT, 'BDTG',
         '!H:!V:VarTransform=D,G:NTrees=1000:BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4')
 
