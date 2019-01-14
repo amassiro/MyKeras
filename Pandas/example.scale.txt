@@ -1,5 +1,5 @@
 #
-# pix, layerorside, ladderorblade, eta, irun  -> value
+# pix layerorside ladderorblade etaMin etaMax  irunMin irunMax  value
 #
 
 1         0             0        0.0  0.1     123456    234567         1.123
